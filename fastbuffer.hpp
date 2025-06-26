@@ -42,6 +42,11 @@ public:
     std::copy(to_add.begin(), to_add.end(), &m_buffer[m_bufferUsed]);
     m_bufferUsed += to_add.size();
   }
+  void operator+=(const std::string &to_add) {
+    checkFreeSpace(to_add.size());
+    std::copy(to_add.begin(), to_add.end(), &m_buffer[m_bufferUsed]);
+    m_bufferUsed += to_add.size();
+  }
   void operator-=(std::size_t consume_size) {
     const auto unconsumed_space = unconsumed();
     checkConsumableSpace(consume_size);
@@ -128,6 +133,10 @@ public:
   }
   void operator+=(const std::initializer_list<uint8_t> &to_add) {
     m_packets[m_packetsUsed++].size = to_add.size();
+    m_buffer += to_add;
+  }
+  void operator+=(const std::string &to_add) {
+    m_packets[m_packetsUsed++].size = to_add.length();
     m_buffer += to_add;
   }
   void operator--() {

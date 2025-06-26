@@ -16,10 +16,18 @@
 using std::cout;
 
 auto selftest() {
+  const auto str = std::string("HelloWorld!");
   BufferBase base(16);
+
+  base += "AAAABBBBCCCCDDDD";
+  base -= 16;
 
   TEST_ASSERT(base.capacity() == 16);
   TEST_ASSERT(base.unused() == 16);
+  base += str;
+  TEST_ASSERT(base.size() == str.length());
+  TEST_ASSERT(memcmp(base(0), str.c_str(), base.size()) == 0);
+  base -= str.length();
   base += 3;
   base += {0xFF, 0xFF, 0xFF};
   TEST_ASSERT(base.size() == 6);
@@ -84,11 +92,15 @@ auto selftest() {
   TEST_ASSERT(queue.capacity() == queue.size() &&
               queue.unused() == queue.size() &&
               queue.unconsumed() == queue.size() && queue.size() == 0);
+  TEST_ASSERT(moved_queue.size() == 1);
+  moved_queue += str;
+  TEST_ASSERT(moved_queue.size() == 2);
 }
 
 int main(void) {
   cout << "Selftest..\n";
   selftest();
+  cout << "Ok\n";
 
   return 0;
 }
