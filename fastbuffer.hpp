@@ -74,7 +74,7 @@ public:
     if (commit_size > free_space)
       throw BufferException(
           (boost::format(
-               "Buffer overflow: %1% bytes free, %1% bytes required") %
+               "Buffer overflow: %1% bytes free, %2% bytes required") %
            free_space % commit_size)
               .str());
   }
@@ -83,7 +83,7 @@ public:
     if (consume_size > unconsumed_space)
       throw BufferException(
           (boost::format(
-               "Buffer underflow: %1% bytes used, %1% bytes consumed") %
+               "Buffer underflow: %1% bytes used, %2% bytes consumed") %
            unconsumed_space % consume_size)
               .str());
   };
